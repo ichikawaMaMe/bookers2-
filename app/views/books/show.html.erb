@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<header>
+  <title>Bookers2</title>
+</header>
+<!--header-->
+<div>
+   <%= flash[:notice] %>
+</div>
+<!-- BODY -->
+<% if flash[:error].present? %>
+  <div class="error-message">
+    <p><%= flash[:error] %></p>
+  </div>
+<% end %>
+<main>
+  <p id="notice"></p>
+  <div class="container px-5 px-sm-0">
+    <div class="row">
+      <div class="col-md-3">
+        <h2>User info</h2>
+        <!--投稿した人間のプロフィールを記載-->
+        <%= image_tag @book.user.get_profile_image(100,100) %>
+        <table class="table">
+          <tbody>
+            <tr></tr>
+            <tr>
+              <th>name</th>
+              <th>
+                <h6><%= @book.user.name %></h6>
+              </th>
+            </tr>
+            <tr>
+              <th>introduction</th>
+              <th>
+                <h6><%= @book.user.introduction %></h6>
+              </th>
+            </tr>
+          </tbody>
+        </table>
+         <%= link_to edit_user_path(@book.user_id) do %>
+           <div class="btn btn-outline-secondary btn-block">
+            <span>
+            <i class="fas fa-user-cog"></i>
+            </span>
+           </div>
+        <% end %>
+
+         
+     
+        <h2 class="mt-3">New book</h2>
+
+    <%= form_with model: @books do |f| %>
+    <h4>Title</h4>
+    <%= f.text_field :title %>
+    <h4>Opinion</h4>
+    <%= f.text_area :body %>
+    <br>
+    <input type="submit" name="commit" value="Create Book" class="btn btn-success" data-disable-with="Create Book">
+    <% end %>
+      </div>
+      
+      <div class="col-md-8 offset-md-1">
+        <h2>Book detail</h2>
+        <table class="table table-hover table-inverse">
+          <tbody>
+            <tr>
+              <td><%= image_tag @book.user.get_profile_image(100,100) %>
+              <p><%= link_to @book.user.name, user_path(@book.user_id) %></p>
+              </td>
+              <td><h5><%=link_to @book.title, book_path(@book) %></h5>
+              </td>
+              <td>
+                <h5><%= @book.body %></h5>
+              </td>
+              <% if @book.user == current_user %>
+              <td>
+                <%= link_to "Edit", edit_book_path(@book), class: 'btn btn-sm btn-success' %>
+      　　　　　　  </td>
+              <td>
+               <%= link_to "Destroy", book_path(@book), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %>
+              </td>
+              <% end %>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
+
